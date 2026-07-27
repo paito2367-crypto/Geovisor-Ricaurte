@@ -358,4 +358,14 @@ document.getElementById('checkCuenca').onclick = function () {
 document.getElementById('checkZonificacion').onclick = function () {
     mostrarSoloCapa(Zonificacion);
 }
+const botonCapas= document.getElementById("btnCapas");
+const contenidoCapas= document.getElementById("contenido-capas");
 
+botonCapas.addEventListener("click",function(){
+    contenidoCapas.classList.toggle("mostrar");
+    if(contenidoCapas.classList.contains("mostrar")){
+
+    } else{
+        botonCapas.textContent="▼"
+    }
+});
