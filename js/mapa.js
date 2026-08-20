@@ -680,7 +680,7 @@ if (prioridad === "Muy Alta"){
     recomendacion = "Se recomienda complementar con estudios técnicos"
     }else if (prioridad === "Moderada"){
     diagnostico = "Zona con algunas condiciones limitadas para abastecimiento hídrico"
-    recomendacion = "Se recomienda analizar detalladamente esta zona, antes de ser utilizada para aprovechamiento del recurso hídric"
+    recomendacion = "Se recomienda analizar detalladamente esta zona, antes de ser utilizada para aprovechamiento del recurso hídrico"
     } else {
     diagnostico = "Las condiciones de la zona limitan el aprovechamiento hídrico"
     recomendacion = "Se recomienda utilizar otras zonas con mejores condiciones"
