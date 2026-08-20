@@ -716,7 +716,9 @@ consultaControl.onAdd = function (map) {
     return document.getElementById('Consulta-territorial');
 };
 consultaControl.addTo(map);
-
+const consulta = document.getElementById('Consulta-territorial');
+L.DomEvent.disableClickPropagation(consulta);
+L.DomEvent.disableScrollPropagation(consulta);
 document.querySelectorAll('#contenido-capas input[type="checkbox"]').forEach(function (checkbox) {
     checkbox.addEventListener('change', function () {
         document.getElementById('Consulta-territorial').style.display = 'none';
@@ -724,6 +726,7 @@ document.querySelectorAll('#contenido-capas input[type="checkbox"]').forEach(fun
 });
 
 //Actualizar// 
+
 
 
 
