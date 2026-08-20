@@ -3,7 +3,7 @@
     <head>
         <meta charSet="UTF - 8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <title>Plataforma Web Geoespacial para el Análisis de Fuentes Hídricas Vereda Ricaurte  </title>
+                <title>Geovisor para el Análisis de Fuentes Hídricas Vereda Ricaurte </title>
                 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
                 <link rel="stylesheet" href="css/estilos.css">
                 </head>
@@ -21,12 +21,13 @@
                 </div>
 
                 <div id="contenido-capas">
-                <label><input type="checkbox" id="checkAptitudH"> Aptitud Hídrica</label><br>
+                <label><input type="checkbox" id="checkAptitudH"> Aptitud Territorial Acueductos</label><br>
                 <label><input type="checkbox" id="checkZonificacion"> Zonificación Ambiental</label><br>
                 <label><input type="checkbox" id="checkCuenca"> Cuenca</label><br>
                 <label><input type="checkbox" id="checkOfertaH" > Oferta Hídrica</label><br>
                 <label><input type="checkbox" id="checkDistancia" > Distancia Red de Denaje</label><br>
                 <label><input type="checkbox" id="checkRedDrenaje"> Red de Denaje</label><br>
+                 <label><input type="checkbox" id="checkDemografia" >Distribución de la Población</label><br>
                 <label><input type="checkbox" id="checkVias" > Red Vial</label><br>
                 <label><input type="checkbox" id="checkVereda" > Vereda Ricaurte</label><br>
                           
@@ -37,7 +38,7 @@
                 <div id="Convenciones">
                 <h3>Convenciones</h3>
                 <div id="convgeneral" style="display: none;">
-                <h4> Zonificación Ambiental/ Aptitud Hídrica</h4>
+                <h4> Zonificación Ambiental</h4>
                 
                 <div class= "item-leyenda">
                 <span class="color muy-alta"></span> Muy Alta</div>
@@ -57,20 +58,28 @@
 
                 <div id="ConOferta" style="display: none;">
                 <h4>Oferta Hídrica</h4>
-                <div><span class="color" style="background: lightblue;"></span>Muy Baja</div> 
-                <div><span class="color" style="background: skyblue;"></span>Baja</div> 
-                <div><span class="color" style="background: dodgerblue;"></span>Moderada</div> 
-                <div><span class="color" style="background: blue;"></span>Alta</div> 
-                <div><span class="color" style="background: darkblue;"></span>Muy Alta</div> 
+                <div><span class="color" style="background: rgb(156, 156, 156);"></span>Muy Baja</div> 
+                <div><span class="color" style="background: rgb(190, 232, 255);"></span>Baja</div> 
+                <div><span class="color" style="background: rgb(115, 178, 255);"></span>Moderada</div> 
+                <div><span class="color" style="background: rgb(0, 112, 255);"></span>Alta</div> 
+                <div><span class="color" style="background: rgb(0, 77, 168);"></span>Muy Alta</div> 
                 </div> 
 
                 <div id="conDistancia" style="display: none;">
-                <h4>Distancia Red de Drenaje</h4>
-                 <div><span class="color" style="background: green;"></span>Baja</div> 
-                 <div><span class="color" style="background: yellow;"></span>Moderada</div>
-                 <div><span class="color" style="background: orange;"></span>Alta</div>  
-                 <div><span class="color" style="background: red;"></span>Muy Alta</div> 
+                <h4>Distancia a la Red de Drenaje</h4>
+                 <div><span class="color" style="background: rgb(190, 232, 255);"></span>Baja</div> 
+                 <div><span class="color" style="background: rgb(115, 178, 255);"></span>Moderada</div>
+                 <div><span class="color" style="background: rgb(0, 112, 255);"></span>Alta</div>  
+                 <div><span class="color" style="background: rgb(0, 77, 168);"></span>Muy Alta</div> 
                  </div>
+                
+                  <div id="conAptitud" style="display: none;">
+                <h4>Aptitud Territorial</h4>
+                <div><span class="color" style="background: rgb(3, 9, 72);"></span>Muy Alta</div> 
+                <div><span class="color" style="background: rgb(190, 232, 255);"></span>Alta</div> 
+                <div><span class="color" style="background: rgb(115, 178, 255);"></span>Moderada</div> 
+                <div><span class="color" style="background: rgb(0, 112, 255);"></span>Baja</div> 
+                </div> 
 
                  <div id="conVias" style="display: none;">
                     <h4>Red Vial </h4>
@@ -86,9 +95,21 @@
 
                     </div>
                  
-                   
-
+                  <div id="conDemografia" style="display: none;">
+                    <h4>Distribución de la Población</h4>
+                    <div class="item-leyenda">
+                    <span class="color" style="background:rgb(255, 0, 208);"></span> Área Urbana</div>
+                    <div class="item-leyenda">
+                    <span class="color" style="background:rgb(225, 0, 255);"></span> Área Rural</div>
+                    <div class="item-leyenda">
+                    <span class="color" style="background:rgb(228, 227, 224);"></span> Sin Información</div>
+                                    
                 </div>
+                </div>
+
+                
+                             
+
                 </div>
 
                 <div id="encabezado">
@@ -97,25 +118,46 @@
 
                 <div id="titulo">
 
-                <h1> Plataforma Web Geoespacial <br>
-                    para el Análisis de Fuentes Hídricas Vereda Ricaurte</h1>
-                
+                <h1> GEOVISOR ANÁLISIS DE FUENTES HÍDRICAS VEREDA RICAURTE<br>
+                RONDÓN - BOYACÁ
+                </h1>
                 <div id="datos">
-                    <span><strong> Proyecto de Grado:</strong>Maestría en Geoinformación del Territorio</span>
-                    <span><strong> Autor:</strong>Diana Paola Reyes Rojas</span>
+                <span><strong> Proyecto de Grado:</strong>Maestría en Geoinformación del Territorio</span>
+                <span><strong> Autor:</strong>Diana Paola Reyes Rojas</span>
                 </div>
-                </div>
+           
+            </div>
 
+        </div>
+                                          
 
-
-                </div>
-                           
                 <div id="map"></div>
-                 
-                 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-                 
-                                  
+                <div id="Consulta-territorial">
+                <h3>&#128269; Consulta Territorial</h3>
+
+                <div id="consulta">
+                    <p>Haz click en el mapa para <br>
+                    consultar una zona.</p>
+                </div>   
+            </div> 
+
+                <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+                <script src="https://unpkg.com/@turf/turf@6.5.0/turf.min.js"></script>
+                        
                  <script src="js/mapa.js"></script>
+            </div>   
+            </div>
+
+            
+      
+                
+
+            
+                
 
     </body>
     </html>        
+
+
+    
+    

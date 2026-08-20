@@ -1,4 +1,5 @@
 const map = L.map('map').setView([5.35, -72.99], 12);
+document.getElementById("Consulta-territorial").style.display = "block";
 
 const OpenStreetMap = L.tileLayer('https://{s}.tile.OpenStreetMap.org/{z}/{x}/{y}.png', 
     {
@@ -33,8 +34,9 @@ fetch('datos/Vereda.geojson')
     Vereda = L.geoJSON(data, {
         style: {
             color: 'black',
-            weight: 3,
-            fillColor: 'false',
+            weight: 10,
+            opacity: 1,
+            fillOpacity: 0,
         },
 
         onEachFeature: function (feature, layer) {
@@ -75,20 +77,40 @@ fetch('datos/Zonificacion.geojson')
         style: function (feature) {
             switch (feature.properties.Sensibilidad) {
                 case 'Muy Alta':
-                    return { color: 'red', weight: 1, fillColor: 'red', fillOpacity: 0.5 };
+                    return { color: 'red', weight: 1, fillColor: 'red', fillOpacity: 1.0 };
                 case 'Alta':
-                    return { color: 'orange', weight: 2, fillColor: 'orange', fillOpacity: 0.5 };
+                    return { color: 'orange', weight: 2, fillColor: 'orange', fillOpacity: 1.0 };
                 case 'Moderada':
-                    return { color: 'yellow', weight: 2, fillColor: 'yellow', fillOpacity: 0.5 };
+                    return { color: 'yellow', weight: 2, fillColor: 'yellow', fillOpacity: 1.0 };
                 case 'Baja':
-                    return { color: 'darkgreen', weight: 2, fillColor: 'darkgreen', fillOpacity: 0.5 };
+                    return { color: 'darkgreen', weight: 2, fillColor: 'darkgreen', fillOpacity: 1.0 };
                 case 'Muy Baja':
-                    return { color: 'lightgreen', weight: 2, fillColor: 'lightgreen', fillOpacity: 0.5 }; 
+                    return { color: 'lightgreen', weight: 2, fillColor: 'lightgreen', fillOpacity: 1.0 }; 
             
                 default:
-                    return { color: 'lightgray', weight: 2, fillColor: 'lightgray', fillOpacity: 0.3 };
+                    return { color: 'lightgray', weight: 2, fillColor: 'lightgray', fillOpacity: 10 };
+                  }
+        },
+        onEachFeature: function (feature, layer) {
+            layer.on('click', function (e) {
+                document.getElementById('Consulta-territorial').style.display = 'none';
+                L.DomEvent.stopPropagation(e);
+                const Zonificacion = feature.properties.Sensibilidad;
+                const lat = e.latlng.lat.toFixed(5);
+                const lng = e.latlng.lng.toFixed(5);
+                layer.bindPopup(`
+                    <div>
+                    <h3> &#127807; Consulta Zonificación Ambiental</h3>
+                    <b> Variable: </b> Sensibilidad Ambiental<br>
+                    <b> Clasificación: </b> ${Zonificacion}<br></br>
+                    &#128205; <b> Ubicación: </b><br>
+                    Latitud: ${lat}<br>
+                    Longitud: ${lng}
+                    </div>
+                    `).openPopup(e.latlng);
+
+                   });
             }
-        }
     });
 })
 .catch(error => {
@@ -103,23 +125,43 @@ fetch('datos/OfertaH.geojson')
         style: function (feature) {
             switch (feature.properties.Categoria) {
                 case 'Muy Alta':
-                    return { color: 'darkblue', weight: 1, fillColor: 'darkblue', fillOpacity: 0.5 };
+                    return { color: 'rgb(156, 156, 156)', weight: 1, fillColor: 'rgb(156, 156, 156)', fillOpacity: 1 };
                 case 'Alta':
-                    return { color: 'royalblue', weight: 2, fillColor: 'royalblue', fillOpacity: 0.5 };
+                    return { color: 'rgb(190, 232, 255)', weight: 2, fillColor: 'rgb(190, 232, 255)', fillOpacity: 1 };
                 case 'Moderada':
-                    return { color: 'dodgerblue', weight: 2, fillColor: 'dodgerblue', fillOpacity: 0.5 };
+                    return { color: 'rgb(115, 178, 255)', weight: 2, fillColor: 'rgb(115, 178, 255)', fillOpacity: 1 };
                 case 'Baja':
-                    return { color: 'lightskyblue', weight: 2, fillColor: 'lightskyblue', fillOpacity: 0.5 };
+                    return { color: 'rgb(190, 232, 255)', weight: 2, fillColor: 'rgb(190, 232, 255)', fillOpacity: 0.5 };
                 case 'Muy Baja':
-                    return { color: 'aliceblue', weight: 2, fillColor: 'aliceblue', fillOpacity: 0.5 }; 
+                    return { color: 'rgb(156, 156, 156)', weight: 2, fillColor: 'rgb(156, 156, 156)', fillOpacity: 1 }; 
             
                 default:
-                    return { color: 'lightgray', weight: 2, fillColor: 'lightgray', fillOpacity: 0.3 };
+                    return { color: 'lightgray', weight: 2, fillColor: 'lightgray', fillOpacity: 1 };
             }
-        }
+        },
+        onEachFeature: function (feature, layer) {
+            layer.on('click', function (e) {
+                document.getElementById('Consulta-territorial').style.display = 'none';
+                L.DomEvent.stopPropagation(e);
+                const Categoria = feature.properties.Categoria;
+                const lat = e.latlng.lat.toFixed(5);
+                const lng = e.latlng.lng.toFixed(5);
+                layer.bindPopup(`
+                    <div>
+                    <h3> &#128166; Consulta Potencial Hídrico</h3>
+                    <b> Variable: </b> Disponibilidad de agua<br>
+                    <b> Clasificación: </b> ${Categoria}<br></br>
+                    &#128205; <b> Ubicación: </b><br>
+                    Latitud: ${lat}<br>
+                    Longitud: ${lng}
+                    </div>
+                    `).openPopup(e.latlng);
+
+                   });
+            }
     });
 })
-.catch(error => {
+.catch(error => {      
     console.error('Error al cargar el archivo OfertaH:', error);
 });
 
@@ -129,22 +171,40 @@ fetch('datos/AptitudH.geojson')
 .then(data => {
     AptitudH = L.geoJSON(data, {
         style: function (feature) {
-            switch (feature.properties.Clasificacion) {
-                case 'Muy Alta':
-                    return { color: 'darkgreen', weight: 1, fillColor: 'darkgreen', fillOpacity: 0.5 };
+            switch (feature.properties.Aptitud) {
+                                case 'Muy Alta':
+                    return { color: 'rgb(3, 9, 72)', weight: 2, fillColor: 'rgb(3, 9, 72)', fillOpacity: 1.0 };
                 case 'Alta':
-                    return { color: 'forestgreen', weight: 2, fillColor: 'forestgreen', fillOpacity: 0.5 };
+                    return { color: 'rgb(190, 232, 255)', weight: 2, fillColor: 'rgb(190, 232, 255)', fillOpacity: 1.0 };
                 case 'Moderada':
-                    return { color: 'yellow', weight: 2, fillColor: 'yellow', fillOpacity: 0.5 };
+                    return { color: 'rgb(115, 178, 255)', weight: 2, fillColor: 'rgb(115, 178, 255)', fillOpacity: 1.0 };
                 case 'Baja':
-                    return { color: 'orange', weight: 2, fillColor: 'orange', fillOpacity: 0.5 };
-                case 'Muy Baja':
-                    return { color: 'firebrick', weight: 2, fillColor: 'firebrick', fillOpacity: 0.5 }; 
-            
+                    return { color: 'rgb(0,112,255)', weight: 2, fillColor: 'rgb(0,112,255)', fillOpacity: 1.0 };
+                         
                 default:
                     return { color: 'lightgray', weight: 1, fillColor: 'lightgray', fillOpacity: 0.3 };
             }
-        }
+        },
+        onEachFeature: function (feature, layer) {
+            layer.on('click', function (e) {
+                document.getElementById('Consulta-territorial').style.display = 'none';
+                L.DomEvent.stopPropagation(e);
+                const aptitud = feature.properties.Aptitud;
+                const lat = e.latlng.lat.toFixed(5);
+                const lng = e.latlng.lng.toFixed(5);
+                layer.bindPopup(`
+                    <div>
+                    <h3> &#127758; Consulta Territorial</h3>
+                    <b> Variable: </b> Aptitud Territorial<br>
+                    <b> Clasificación: </b> ${aptitud}<br></br>
+                    &#128205 <b> Ubicación: </b><br>
+                    Latitud: ${lat}<br>
+                    Longitud: ${lng}
+                    </div>
+                    `).openPopup(e.latlng);
+
+                   });
+            }
     });
 })
 .catch(error => {
@@ -208,7 +268,27 @@ fetch('datos/Vias.geojson')
 
                     };
             }
-        }
+         },
+        onEachFeature: function (feature, layer) {
+            layer.on('click', function (e) {
+                document.getElementById('Consulta-territorial').style.display = 'none';
+                L.DomEvent.stopPropagation(e);
+                const TipoVia = feature.properties.TipoVia;
+                const lat = e.latlng.lat.toFixed(5);
+                const lng = e.latlng.lng.toFixed(5);
+                layer.bindPopup(`
+                    <div>
+                    <h3> &#128739; Consulta Red Vial</h3>
+                    <b> Variable: </b> Tipo de Vía<br>
+                    <b> Clasificación: </b> ${TipoVia}<br></br>
+                    &#128205 <b> Ubicación: </b><br>
+                    Latitud: ${lat}<br>
+                    Longitud: ${lng}
+                    </div>
+                    `).openPopup(e.latlng);
+
+                   });
+            }
     });
 })
 .catch(error => {
@@ -222,22 +302,87 @@ fetch('datos/Distancia.geojson')
     Distancia = L.geoJSON(data, {
         style: function (feature) {
             switch (feature.properties.Categoria) {
-                case 'Muy Alta':
-                    return { color: 'Red', weight: 1, opacity: 0.5 };
+                 case 'Muy Alta':
+                    return { color: 'rgb(0, 77, 168)', weight: 0.3, fillColor: 'rgb(0, 77, 168)', fillOpacity: 0.9 };
                 case 'Alta':
-                    return { color: 'Orange', weight: 1, opacity: 0.5 };
-                case 'Media':
-                    return { color: 'Yellow', weight: 1, opacity: 0.5 };
+                    return { color: 'rgb(0, 112, 255)', weight: 0.3, fillColor: 'rgb(0, 112, 255)', fillOpacity: 0.9 };
+                case 'Moderada':
+                    return { color: 'rgb(115, 178, 255)', weight: 0.3, fillColor: 'rgb(115, 178, 255)', fillOpacity: 0.9 };
                 case 'Baja':
-                    return { color: 'Green', weight: 1, opacity: 0.5 };
+                    return { color: 'rgb(190, 232, 255)', weight: 0.3, fillColor: 'rgb(190, 232, 255)', fillOpacity: 0.9 };
+                           
                 default:
-                    return { color: 'Gray', weight: 1, opacity: 0.5 };
+                    return { color: 'lightgray', weight: 1, fillColor: 'lightgray', fillOpacity: 0.3 };
             }
-        }
+         },
+        onEachFeature: function (feature, layer) {
+            layer.on('click', function (e) {
+                document.getElementById('Consulta-territorial').style.display = 'none';
+                L.DomEvent.stopPropagation(e);
+                const Distancia = feature.properties.Categoria;
+                const lat = e.latlng.lat.toFixed(5);
+                const lng = e.latlng.lng.toFixed(5);
+                layer.bindPopup(`
+                    <div>
+                    <h3> &#128167; Consulta Distancia a la Red de Drenaje</h3>
+                    <b> Variable: </b> Distancia drenajes superficiales<br>
+                    <b> Clasificación: </b> ${Distancia}<br></br>
+                    &#128205 <b> Ubicación: </b><br>
+                    Latitud: ${lat}<br>
+                    Longitud: ${lng}
+                    </div>
+                    `).openPopup(e.latlng);
+
+                   });
+            }
     });
 })
 .catch(error => {
     console.error('Error al cargar el archivo Distancia:', error);
+});
+
+let Demografia;
+fetch('datos/Demografia.geojson')
+.then(response => response.json())
+.then(data => {
+    Demografia = L.geoJSON(data, {
+        style: function (feature) {
+            switch (feature.properties.Descripcion) {
+                 case 'Área Urbana':
+                    return { color: 'rgb(255, 0, 208)', weight: 0.3, fillColor: 'rgb(255, 0, 208)', fillOpacity: 0.7 };
+                case 'Área Rural':
+                    return { color: 'rgb(225, 0, 255)', weight: 0.3, fillColor: 'rgb(225, 0, 255)', fillOpacity: 0.5 };
+                case 'Sin Información':
+                    return { color: 'hsl(60, 1%, 52%)', weight: 0.3, fillColor: 'hsl(60, 1%, 52%)', fillOpacity: 1 };
+                                           
+                default:
+                    return { color: 'lightgray', weight: 1, fillColor: 'lightgray', fillOpacity: 0.3 };
+            }
+         },
+        onEachFeature: function (feature, layer) {
+            layer.on('click', function (e) {
+                document.getElementById('Consulta-territorial').style.display = 'none';
+                L.DomEvent.stopPropagation(e);
+                const Demografia = feature.properties.Descripcion;
+                const lat = e.latlng.lat.toFixed(5);
+                const lng = e.latlng.lng.toFixed(5);
+                layer.bindPopup(`
+                    <div>
+                    <h3> &#128101; Consulta Demográfica</h3>
+                    <b> Variable: </b> Distribución de la Población<br>
+                    <b> Clasificación: </b> ${Demografia}<br></br>
+                    &#128205 <b> Ubicación: </b><br>
+                    Latitud: ${lat}<br>
+                    Longitud: ${lng}
+                    </div>
+                    `).openPopup(e.latlng);
+
+                   });
+            }
+    });
+})
+.catch(error => {
+    console.error('Error al cargar el archivo Demografia:', error);
 });
 
 let mapaBase = {
@@ -284,7 +429,7 @@ map.on('mousemove', function (e) {
     }
     console.log("función activa");
     console.log(capa);
-    [AptitudH, OfertaH, Distancia, RedDrenaje, Vias, Cuenca, Zonificacion]
+    [AptitudH, OfertaH, Distancia, RedDrenaje, Vias, Cuenca, Zonificacion, Demografia]
     .filter(c=> c)
     .forEach(function(c){
         if(map.hasLayer(c)){
@@ -292,21 +437,35 @@ map.on('mousemove', function (e) {
         }
     });
     map.addLayer(capa);
-        if(capa === Zonificacion || capa === AptitudH){
+        if(capa === Zonificacion ){
         document.getElementById ("Convenciones").style.display ="block";
         document.getElementById ("convgeneral").style.display ="block";
         document.getElementById ("ConOferta").style.display ="none";
         document.getElementById ("conDistancia").style.display ="none";
         document.getElementById ("conVias").style.display ="none";
+        document.getElementById ("conAptitud").style.display ="none";
+        document.getElementById ("conDemografia").style.display ="none";
 
-        } 
+        }
+        
+        else if (capa === AptitudH){
+        document.getElementById("Convenciones").style.display ="block";
+        document.getElementById ("convgeneral").style.display ="none";
+        document.getElementById ("ConOferta").style.display ="none";
+        document.getElementById ("conDistancia").style.display ="none";
+        document.getElementById ("conVias").style.display ="none";
+        document.getElementById ("conAptitud").style.display ="block";
+        document.getElementById ("conDemografia").style.display ="none";
+        }   
+
         else if (capa === OfertaH){
         document.getElementById("Convenciones").style.display ="block";
         document.getElementById ("convgeneral").style.display ="none";
         document.getElementById ("ConOferta").style.display ="block";
         document.getElementById ("conDistancia").style.display ="none";
         document.getElementById ("conVias").style.display ="none";
-
+        document.getElementById ("conAptitud").style.display ="none";
+        document.getElementById ("conDemografia").style.display ="none";
         }
 
         else if (capa === Distancia){
@@ -314,8 +473,9 @@ map.on('mousemove', function (e) {
         document.getElementById ("convgeneral").style.display ="none";
         document.getElementById ("ConOferta").style.display ="none";
         document.getElementById ("conDistancia").style.display ="block";
-         document.getElementById ("conVias").style.display ="none";
-
+        document.getElementById ("conVias").style.display ="none";
+        document.getElementById ("conAptitud").style.display ="none";
+        document.getElementById ("conDemografia").style.display ="none";
         }
 
         else if (capa === Vias){
@@ -323,8 +483,19 @@ map.on('mousemove', function (e) {
         document.getElementById ("convgeneral").style.display ="none";
         document.getElementById ("ConOferta").style.display ="none";
         document.getElementById ("conDistancia").style.display ="none";
-         document.getElementById ("conVias").style.display ="block";
+        document.getElementById ("conVias").style.display ="block";
+        document.getElementById ("conAptitud").style.display ="none";
+        document.getElementById ("conDemografia").style.display ="none";
+        }
 
+        else if (capa === Demografia){
+        document.getElementById("Convenciones").style.display ="block";
+        document.getElementById ("convgeneral").style.display ="none";
+        document.getElementById ("ConOferta").style.display ="none";
+        document.getElementById ("conDistancia").style.display ="none";
+        document.getElementById ("conVias").style.display ="none";
+        document.getElementById ("conAptitud").style.display ="none";
+        document.getElementById ("conDemografia").style.display ="block";
         }
     
 
@@ -358,6 +529,9 @@ document.getElementById('checkCuenca').onclick = function () {
 document.getElementById('checkZonificacion').onclick = function () {
     mostrarSoloCapa(Zonificacion);
 }
+document.getElementById('checkDemografia').onclick = function () {
+    mostrarSoloCapa(Demografia);
+}
 const botonCapas= document.getElementById("btnCapas");
 const contenidoCapas= document.getElementById("contenido-capas");
 
@@ -369,3 +543,208 @@ botonCapas.addEventListener("click",function(){
         botonCapas.textContent="▼"
     }
 });
+
+if (Vereda && map.hasLayer(Vereda)) {
+    Vereda.bringToFront();
+}
+
+function consultarCapa(latlng, capa, campo) {
+    let resultado = "Sin Información";
+    if (!capa) return resultado;
+    const punto = turf.point ([latlng.lng, latlng.lat
+    ]);
+    capa.eachLayer(function (layer) {
+        if (!layer.feature) return;
+        try {
+            const dentro = turf.booleanPointInPolygon(
+            punto, layer.feature);
+            if (dentro) {
+                resultado = layer.feature.properties[campo];
+            }
+        } catch (error) {
+            console.error("Error al consultar la capa:", error);
+        }
+    });
+    return resultado;
+}
+
+function valorCategoria(valor) {
+    if (!valor) return 0;
+
+    valor = valor.toString().trim().toLowerCase();
+
+    if (valor === "muy alta") return 5;
+    if (valor === "alta") return 4;
+    if (valor === "moderada") return 3;
+    if (valor === "baja") return 2;
+    if (valor === "muy baja") return 1;
+
+    return 0;
+}
+map.on('click', function (e) {
+    let dentroAreaEstudio = false;
+
+    const punto = turf.point ([
+        e.latlng.lng,
+        e.latlng.lat
+    ]);
+
+    Vereda.eachLayer(function(layer){ 
+        if (layer.feature && layer.feature.geometry){
+            try{
+                if(turf.booleanPointInPolygon(
+                    punto,
+                    layer.feature
+                )){
+                    dentroAreaEstudio = true;
+                }
+            } catch (error) {
+                console.error("Error verificando area de estudio:", 
+                    error
+                );
+            }
+        }
+    });
+    if (!dentroAreaEstudio){
+        document.getElementById('Consulta-territorial').style.display = 'none';
+        return;
+    }
+   
+    
+    //Si esta dentro del area//
+
+    
+    document.getElementById('Consulta-territorial').style.display = 'block';
+    //Consultar capas//
+    const resultadoZonificacion = consultarCapa(e.latlng, Zonificacion, 'Sensibilidad');
+    const resultadoOfertaH = consultarCapa(e.latlng, OfertaH, 'Categoria');
+    const resultadoAptitudH = consultarCapa(e.latlng, AptitudH, 'Aptitud');
+    const resultadoDistancia = consultarCapa(e.latlng, Distancia, 'Categoria');
+    const resultadoDemografia = consultarCapa(e.latlng, Demografia, 'Descripcion'
+
+    );
+
+    //Convertir categorias a valores//
+    const pZonificacion =valorCategoria(resultadoZonificacion);
+    const pOfertaH =valorCategoria(resultadoOfertaH);
+    const pAptitudH =valorCategoria(resultadoAptitudH);
+    const pDistancia =valorCategoria(resultadoDistancia);
+
+
+    //Calcular indice//
+    const indice = 
+    (pZonificacion +
+    pOfertaH +
+    pAptitudH +
+    pDistancia)/4;
+
+    //Determinar prioridad//
+    let prioridad;
+    if (indice >= 4.5){
+    prioridad = "Muy Alta";
+    } else if (indice >= 3.5){
+    prioridad = "Alta"
+   } else if (indice >= 2.5){
+    prioridad = "Moderada"
+    } else if (indice >= 1.5){
+    prioridad = "Baja"
+    } else {
+    prioridad = "Muy Baja" 
+}
+
+let colorPrioridad;
+if (prioridad === "Muy Alta"){
+    colorPrioridad = "#006400";
+} else if(prioridad === "Alta"){
+    colorPrioridad = "#228B22"; 
+} else if(prioridad === "Moderada"){
+    colorPrioridad = "#FFD700"; 
+} else if(prioridad === "Baja"){
+    colorPrioridad = "#FFA500"; 
+} else {
+    colorPrioridad = "#D32F1F"
+}
+
+
+
+
+    //Diagnostico y recomeciones//
+    let diagnostico;
+    let recomendacion;
+
+    if (prioridad === "Muy Alta"){
+    diagnostico = "Zona con condiciones muy favorables para el aprovechamiento del recurso hídrico"
+    recomendacion = "Se recomienda dar prioridad a esta zona para análisis de abastecimiento de acuducto rural"
+    } else if (prioridad === "Alta"){
+    diagnostico = "Zona con condiciones favorables para abastecimiento de agua"
+    recomendacion = "Se recomienda complementar con estudios técnicos"
+    }else if (prioridad === "Moderada"){
+    diagnostico = "Zona con algunas condiciones limitadas para abastecimiento hídrico"
+    recomendacion = "Se recomienda analizar detalladamente esta zona, antes de ser utilizada para aprovechamiento del recurso hídric"
+    } else {
+    diagnostico = "Las condiciones de la zona limitan el aprovechamiento hídrico"
+    recomendacion = "Se recomienda utilizar otras zonas con mejores condiciones"
+    }
+
+    //Mostrar resultado//
+
+        document.getElementById('consulta').innerHTML = `
+        <p>&#127807; <b> Zonificación Ambiental: </b> ${resultadoZonificacion}</p>
+        <p>&#128166; <b> Potencial Hídrico: </b> ${resultadoOfertaH}</p>
+        <p>&#127758; <b> Aptitud Territorial: </b> ${resultadoAptitudH}</p>
+        <p>&#128167; <b> Distancia a la Red de Drenaje: </b> ${resultadoDistancia}</p>
+        <p>&#128101; <b> Distribución de la Población: </b> ${resultadoDemografia}</p>
+
+    <hr>
+
+    <p>&#128506; <b>Prioriodad territorial:</b> 
+    <span style = "color:${colorPrioridad}; font-weight:bold;">
+    ${prioridad}
+     </span>
+     </p>
+
+     <p>&#128202;<b>Diagnóstico:</b><br>
+     ${diagnostico}</p>
+      <p>&#128221; <b>Recomendación:</b><br>
+     ${recomendacion}</p>
+    `;
+});
+
+
+const consultaControl = L.control({ position: 'topleft' });
+consultaControl.onAdd = function (map) {
+    return document.getElementById('Consulta-territorial');
+};
+consultaControl.addTo(map);
+
+document.querySelectorAll('#contenido-capas input[type="checkbox"]').forEach(function (checkbox) {
+    checkbox.addEventListener('change', function () {
+        document.getElementById('Consulta-territorial').style.display = 'none';
+    });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
