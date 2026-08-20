@@ -723,6 +723,7 @@ document.querySelectorAll('#contenido-capas input[type="checkbox"]').forEach(fun
     });
 });
 
+//Actualizar// 
 
 
 
