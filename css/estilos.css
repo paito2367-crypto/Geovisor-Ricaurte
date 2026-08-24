@@ -193,6 +193,27 @@ body{
     font-weight: bold;
 
   }
+
+#Consulta-territorial {
+    position: absolute;
+    top: 150px;
+    left: 20px;
+    width: 280px;
+    max-height: 60vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    padding: 12px;
+    box-sizing: border-box;
+
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px gray;
+
+    z-index: 9999;
+    font-family: "Segoe UI", Arial, sans-serif;
+}
+
 @media (max-width: 768px) {
 
     #encabezado{
