@@ -1,5 +1,6 @@
 const map = L.map('map').setView([5.35, -72.99], 12);
 document.getElementById("Consulta-territorial").style.display = "block";
+let marcadorConsulta=null;
 
 const OpenStreetMap = L.tileLayer('https://{s}.tile.OpenStreetMap.org/{z}/{x}/{y}.png', 
     {
@@ -96,13 +97,16 @@ fetch('datos/Zonificacion.geojson')
                 document.getElementById('Consulta-territorial').style.display = 'none';
                 L.DomEvent.stopPropagation(e);
                 const Zonificacion = feature.properties.Sensibilidad;
+                const categoriaInfo = encodeURIComponent(Zonificacion);
                 const lat = e.latlng.lat.toFixed(5);
                 const lng = e.latlng.lng.toFixed(5);
                 layer.bindPopup(`
                     <div>
                     <h3> &#127807; Consulta Zonificación Ambiental</h3>
                     <b> Variable: </b> Sensibilidad Ambiental<br>
-                    <b> Clasificación: </b> ${Zonificacion}<br></br>
+                   <b> Clasificación: </b> ${Zonificacion}
+<button onclick="mostrarInfo('zonificacion', decodeURIComponent('${categoriaInfo}'))"
+style="border:none;background:none;cursor:pointer;">ⓘ</button><br><br>
                     &#128205; <b> Ubicación: </b><br>
                     Latitud: ${lat}<br>
                     Longitud: ${lng}
@@ -144,13 +148,16 @@ fetch('datos/OfertaH.geojson')
                 document.getElementById('Consulta-territorial').style.display = 'none';
                 L.DomEvent.stopPropagation(e);
                 const Categoria = feature.properties.Categoria;
+                const categoriaInfo = encodeURIComponent(Categoria);
                 const lat = e.latlng.lat.toFixed(5);
                 const lng = e.latlng.lng.toFixed(5);
                 layer.bindPopup(`
                     <div>
                     <h3> &#128166; Consulta Potencial Hídrico</h3>
                     <b> Variable: </b> Disponibilidad de agua<br>
-                    <b> Clasificación: </b> ${Categoria}<br></br>
+                    <b> Clasificación: </b> ${Categoria}
+                    <button onclick="mostrarInfo('Categoria', decodeURIComponent('${categoriaInfo}'))"
+style="border:none;background:none;cursor:pointer;">ⓘ</button><br><br>
                     &#128205; <b> Ubicación: </b><br>
                     Latitud: ${lat}<br>
                     Longitud: ${lng}
@@ -190,13 +197,15 @@ fetch('datos/AptitudH.geojson')
                 document.getElementById('Consulta-territorial').style.display = 'none';
                 L.DomEvent.stopPropagation(e);
                 const aptitud = feature.properties.Aptitud;
+                const categoriaInfo = encodeURIComponent(aptitud);
                 const lat = e.latlng.lat.toFixed(5);
                 const lng = e.latlng.lng.toFixed(5);
                 layer.bindPopup(`
                     <div>
                     <h3> &#127758; Consulta Territorial</h3>
-                    <b> Variable: </b> Aptitud Territorial<br>
-                    <b> Clasificación: </b> ${aptitud}<br></br>
+                    <b> Clasificación: </b> ${aptitud}
+                    <button onclick="mostrarInfo('aptitud', decodeURIComponent('${categoriaInfo}'))"
+style="border:none;background:none;cursor:pointer;">ⓘ</button><br><br>
                     &#128205 <b> Ubicación: </b><br>
                     Latitud: ${lat}<br>
                     Longitud: ${lng}
@@ -222,7 +231,7 @@ fetch('datos/Cuenca.geojson')
             weight: 2,
             fillOpacity: 0.4
         },
-        onEachFeature: function (feature, layer) {
+        onEachFeature: function (_feature, layer) {
             layer.bindTooltip("Cuenca del Río Lengupá", {
                 permanent: true,
                 direction: 'center',
@@ -319,19 +328,30 @@ fetch('datos/Distancia.geojson')
             layer.on('click', function (e) {
                 document.getElementById('Consulta-territorial').style.display = 'none';
                 L.DomEvent.stopPropagation(e);
-                const Distancia = feature.properties.Categoria;
-                const lat = e.latlng.lat.toFixed(5);
-                const lng = e.latlng.lng.toFixed(5);
-                layer.bindPopup(`
-                    <div>
-                    <h3> &#128167; Consulta Distancia a la Red de Drenaje</h3>
-                    <b> Variable: </b> Distancia drenajes superficiales<br>
-                    <b> Clasificación: </b> ${Distancia}<br></br>
-                    &#128205 <b> Ubicación: </b><br>
-                    Latitud: ${lat}<br>
-                    Longitud: ${lng}
-                    </div>
-                    `).openPopup(e.latlng);
+             const Distancia = feature.properties.Categoria;
+const categoriaInfo = encodeURIComponent(Distancia);
+
+const lat = e.latlng.lat.toFixed(5);
+const lng = e.latlng.lng.toFixed(5);
+
+layer.bindPopup(`
+    <div>
+        <h3>📏 Consulta Distancia a la Red de Drenaje</h3>
+
+        <b>Variable:</b> Distancia drenajes superficiales<br>
+
+        <b>Clasificación:</b> ${Distancia}
+        <button onclick="mostrarInfo('distancia', decodeURIComponent('${categoriaInfo}'))"
+            style="border:none;background:none;cursor:pointer;">
+            ⓘ
+        </button>
+        <br><br>
+
+        📍 <b>Ubicación:</b><br>
+        Latitud: ${lat}<br>
+        Longitud: ${lng}
+    </div>
+`).openPopup(e.latlng);
 
                    });
             }
@@ -423,6 +443,7 @@ map.on('mousemove', function (e) {
  }); 
 
  function mostrarSoloCapa(capa) {
+    document.getElementById('consulta-ia').style.display = 'none';
     if (!capa) {
         console.error('La capa no está definida.');
         return;
@@ -583,7 +604,7 @@ function valorCategoria(valor) {
 }
 map.on('click', function (e) {
     let dentroAreaEstudio = false;
-
+   
     const punto = turf.point ([
         e.latlng.lng,
         e.latlng.lat
@@ -609,12 +630,28 @@ map.on('click', function (e) {
         document.getElementById('Consulta-territorial').style.display = 'none';
         return;
     }
+  if (marcadorConsulta) {
+    map.removeLayer(marcadorConsulta);
+}
+
+const iconoVerde = L.icon({
+    iconUrl: 'https://maps.google.com/mapfiles/ms/icons/green-dot.png',
+    iconSize: [32, 32],
+    iconAnchor: [16, 32],
+    popupAnchor: [0, -32]
+});
+
+marcadorConsulta = L.marker(e.latlng, {
+    icon: iconoVerde
+}).addTo(map); 
    
     
     //Si esta dentro del area//
 
     
     document.getElementById('Consulta-territorial').style.display = 'block';
+    document.getElementById('consulta-ia').style.display = 'none';
+
     //Consultar capas//
     const resultadoZonificacion = consultarCapa(e.latlng, Zonificacion, 'Sensibilidad');
     const resultadoOfertaH = consultarCapa(e.latlng, OfertaH, 'Categoria');
@@ -651,6 +688,9 @@ map.on('click', function (e) {
     } else {
     prioridad = "Muy Baja" 
 }
+window.resultadoConsultaIA = {
+    prioridad: prioridad
+}
 
 let colorPrioridad;
 if (prioridad === "Muy Alta"){
@@ -686,29 +726,78 @@ if (prioridad === "Muy Alta"){
     recomendacion = "Se recomienda utilizar otras zonas con mejores condiciones"
     }
 
-    //Mostrar resultado//
+    window.resultadoConsultaIA = {
+    prioridad: prioridad,
+    diagnostico: diagnostico,
+    recomendacion: recomendacion
+};
 
-        document.getElementById('consulta').innerHTML = `
+    
+    //Mostrar resultado//
+  
+    
+    
+    
+    document.getElementById('consulta').innerHTML = `
         <p>&#127807; <b> Zonificación Ambiental: </b> ${resultadoZonificacion}</p>
-        <p>&#128166; <b> Potencial Hídrico: </b> ${resultadoOfertaH}</p>
+        <p>&#128166; <b> Oferta Hídrica: </b> ${resultadoOfertaH}</p>
         <p>&#127758; <b> Aptitud Territorial: </b> ${resultadoAptitudH}</p>
         <p>&#128167; <b> Distancia a la Red de Drenaje: </b> ${resultadoDistancia}</p>
         <p>&#128101; <b> Distribución de la Población: </b> ${resultadoDemografia}</p>
 
     <hr>
-
-    <p>&#128506; <b>Prioriodad territorial:</b> 
-    <span style = "color:${colorPrioridad}; font-weight:bold;">
-    ${prioridad}
-     </span>
-     </p>
-
-     <p>&#128202;<b>Diagnóstico:</b><br>
-     ${diagnostico}</p>
-      <p>&#128221; <b>Recomendación:</b><br>
-     ${recomendacion}</p>
     `;
 });
+
+const botonIA = document.getElementById('boton-ia');
+const consultaIA = document.getElementById('consulta-ia');
+const resultadoIA = document.getElementById('resultado-ia');
+const cerrarIA = document.getElementById('cerrar-ia');
+
+botonIA.onclick = function () {
+    consultaIA.style.display = 'block';
+
+    resultadoIA.innerHTML = `
+
+        <p>
+            ⭐ <b>Prioridad para abastecimiento hídrico</b>
+        </p>
+
+        <p style="text-align:center; font-size:18px;">
+    <b>${window.resultadoConsultaIA.prioridad}</b>
+</p>
+
+<p style="text-align:center;">
+    ${
+        window.resultadoConsultaIA.prioridad === "Muy Alta"
+        ? "Es una condición muy favorable para considerar la zona en procesos de abastecimiento hídrico rural."
+        : window.resultadoConsultaIA.prioridad === "Alta"
+        ? "Es una condición favorable para considerar la zona en procesos de abastecimiento hídrico rural."
+        : window.resultadoConsultaIA.prioridad === "Moderada"
+        ? "Es una condición intermedia para considerar la zona en procesos de abastecimiento hídrico rural."
+        : window.resultadoConsultaIA.prioridad === "Baja"
+        ? "Es una condición poco favorable para considerar la zona en procesos de abastecimiento hídrico rural."
+        : "Es una condición muy poco favorable para considerar la zona en procesos de abastecimiento hídrico rural."
+    }
+</p>
+        
+
+        <p>
+    📋 <b>Diagnóstico:</b><br>
+    ${window.resultadoConsultaIA.diagnostico}
+</p>
+ <p>
+            💡 <b>Recomendación:</b><br>
+            ${window.resultadoConsultaIA.recomendacion}
+        </p>
+
+    `;
+};
+cerrarIA.addEventListener('click', function () {
+    consultaIA.style.display = 'none';
+});
+
+
 
 
 const consultaControl = L.control({ position: 'topleft' });
@@ -720,15 +809,157 @@ const consulta = document.getElementById('Consulta-territorial');
 L.DomEvent.disableClickPropagation(consulta);
 L.DomEvent.disableScrollPropagation(consulta);
 document.querySelectorAll('#contenido-capas input[type="checkbox"]').forEach(function (checkbox) {
+
     checkbox.addEventListener('change', function () {
+
+        // Cerrar consulta territorial
         document.getElementById('Consulta-territorial').style.display = 'none';
+
+        // Cerrar interpretación de resultados
+        document.getElementById('consulta-ia').style.display = 'none';
+
+        // Si se selecciona una capa, desmarcar las demás
+        if (this.checked) {
+            document.querySelectorAll('#contenido-capas input[type="checkbox"]').forEach(function (otraCheckbox) {
+                if (otraCheckbox !== checkbox) {
+                    otraCheckbox.checked = false;
+                }
+            });
+        }
+
+        // Eliminar marcador de consulta
+        if (marcadorConsulta) {
+            map.removeLayer(marcadorConsulta);
+            marcadorConsulta = null;
+        }
+
     });
+
 });
 
-//Actualizar// 
+//Funcion Red Drenaje// 
+function mostrarInfo(tipo, categoria) {
+
+    if (tipo === 'distancia') {
+
+        if (categoria === 'Alta') {
+            alert('Alta: Indica una distancia cercana a la red de drenaje superficial.');
+        }
+
+        else if (categoria === 'Muy Alta') {
+            alert('Muy Alta: Indica una distancia muy cercana a la red de drenaje superficial.');
+        }
+
+        else if (categoria === 'Moderada') {
+            alert('Moderada: Indica una distancia moderada a la red de drenaje superficial.');
+        }
+
+        else if (categoria === 'Baja') {
+            alert('Baja: Indica una distancia lejana a la red de drenaje superficial.');
+        }
+
+        else if (categoria === 'Muy Baja') {
+            alert('Muy Baja: Indica una distancia muy lejana a la red de drenaje superficial.');
+        }
+
+        else {
+            alert('Categoría: ' + categoria);
+        }
+
+    }
+
+           //Oferta hídrica//
+
+   if (tipo === 'Categoria') {
+
+    if (categoria === 'Muy Alta') {
+        alert('Muy Alta: Áreas con muy alta acumulación de agua y condiciones favorables para el abastecimiento de acueductos rurales.');
+    }
+
+    else if (categoria === 'Alta') {
+        alert('Alta: Áreas con disponibilidad hídrica alta para el abastecimiento de acueductos rurales.');
+    }
+
+    else if (categoria === 'Moderada') {
+        alert('Moderada: Áreas con disponibilidad hídrica moderada para el abastecimiento de acueductos rurales.');
+    }
+
+    else if (categoria === 'Baja') {
+        alert('Baja: Áreas con disponibilidad hídrica baja para el abastecimiento de acueductos rurales');
+    }
+
+    else if (categoria === 'Muy Baja') {
+        alert('Muy Baja: Áreas sin disponibilidad hídrica para el abastecimiento de acueductos rurales');
+    }
+
+    else {
+        alert('Categoría: ' + categoria);
+    } 
+    
+    }
+    
+       //Aptitud//
+
+   if (tipo === 'aptitud') {
+
+    if (categoria === 'Muy Alta') {
+        alert('Muy Alta: Áreas con condiciones óptimas para la protección y aprovechamiento del recurso hídrico y de importancia para la sostenibilidad ambiental y el abastecimiento de acueductos rurales.');
+    }
+
+    else if (categoria === 'Alta') {
+        alert('Alta: Áreas que contribuyen de manera significativa en la protección del recurso hídrico y tienen condiciones favorables de conservación ambiental ');
+    }
+
+    else if (categoria === 'Moderada') {
+        alert('Moderada: Áreas que con condiciones limitadas para el aprovechamiento del recurso hídrico');
+    }
+
+    else if (categoria === 'Baja') {
+        alert('Baja: Áreas con bajas condiciones para el abastecimiento de agua para acueductos rurales');
+    }
+
+    else if (categoria === 'Muy Baja') {
+        alert('Muy Baja: Áreas sin potencial hídrico para abastecimiento de acueductos rurales');
+    }
+
+    else {
+        alert('Categoría: ' + categoria);
+    } 
+    
+    }
+
+     //Zonificacion//
+    if (tipo === 'zonificacion') {
+
+    if (categoria === 'Muy Alta') {
+        alert('Muy Alta: Áreas con óptimas condiciones para la protección del recurso hídrico y de importancia para la sostenibilidad ambiental y el abastecimiento de acueductos rurales.');
+    }
+
+    else if (categoria === 'Alta') {
+        alert('Alta: Áreas que contribuyen de manera significativa en la protección del recurso hídrico y tienen condiciones favorables de conservación ambiental ');
+    }
+
+    else if (categoria === 'Moderada') {
+        alert('Moderada: Áreas que requieren medidas de manejo para contribuir en la protección del recurso hídrico ');
+    }
+
+    else if (categoria === 'Baja') {
+        alert('Baja: Áreas que presentan condiciones de baja importancia ambiental para la conservación de fuentes hídricas');
+    }
+
+    else if (categoria === 'Muy Baja') {
+        alert('Muy Baja: Áreas con baja contribución para la protección del recurso hídrico');
+    }
+
+    else {
+        alert('Categoría: ' + categoria);
+    }
 
 
+    }
+    }
 
+    
 
 
 
