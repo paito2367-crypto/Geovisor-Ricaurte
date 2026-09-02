@@ -289,13 +289,18 @@ body{
     }
 
     #panel-capas {
-        top:140px;
+        top: 140px;
         right: 10px;
-        width:150px;
+        width: 150px;
         font-size: 13px;
         padding: 8px;
+
         max-height: 180px;
-        overflow-y: auto;
+        overflow-y: scroll;
+        overflow-x: hidden;
+
+        box-sizing: border-box;
+        -webkit-overflow-scrolling: touch;
     }
 
     #Convenciones{
@@ -463,6 +468,18 @@ body{
         max-height: 50vh;
     }
 }
+
+@media (max-width: 768px) {
+
+    #boton-ia {
+        bottom: 60px;
+        right: 10px;
+        font-size: 12px;
+        padding: 8px 10px;
+    }
+
+};
+    
 
 
 }
