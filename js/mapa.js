@@ -553,16 +553,19 @@ document.getElementById('checkZonificacion').onclick = function () {
 document.getElementById('checkDemografia').onclick = function () {
     mostrarSoloCapa(Demografia);
 }
-const botonCapas= document.getElementById("btnCapas");
-const contenidoCapas= document.getElementById("contenido-capas");
+const botonCapas = document.getElementById("btnCapas");
+const contenidoCapas = document.getElementById("contenido-capas");
 
-botonCapas.addEventListener("click",function(){
-    contenidoCapas.classList.toggle("mostrar");
-    if(contenidoCapas.classList.contains("mostrar")){
+botonCapas.addEventListener("click", function () {
 
-    } else{
-        botonCapas.textContent="▼"
+    if (contenidoCapas.style.display === "none" || contenidoCapas.style.display === "") {
+        contenidoCapas.style.display = "block";
+        botonCapas.textContent = "▲";
+    } else {
+        contenidoCapas.style.display = "none";
+        botonCapas.textContent = "▼";
     }
+
 });
 
 if (Vereda && map.hasLayer(Vereda)) {
@@ -759,23 +762,34 @@ botonIA.onclick = function () {
 
     resultadoIA.innerHTML = `
 
-        <p>
-            ⭐ <b>Prioridad para abastecimiento hídrico</b>
-        </p>
-
-        <p style="text-align:center; font-size:18px;">
-    <b>${window.resultadoConsultaIA.prioridad}</b>
+<p style="text-align:center;">
+    ⭐ <b>PRIORIDAD PARA ABASTECIMIENTO HÍDRICO</b>
 </p>
 
-<p style="text-align:center;">
+<p style="text-align:center; font-size:18px;">
+    <b style="
+        color: ${
+            window.resultadoConsultaIA.prioridad === "Muy Alta" ? "red" :
+            window.resultadoConsultaIA.prioridad === "Alta" ? "orange" :
+            window.resultadoConsultaIA.prioridad === "Moderada" ? "#d4a017" :
+            window.resultadoConsultaIA.prioridad === "Baja" ? "green" :
+            "gray"
+        };
+    ">
+        ${window.resultadoConsultaIA.prioridad.toUpperCase()}
+    </b>
+</p>
+
+<p>
+    
     ${
-        window.resultadoConsultaIA.prioridad === "Muy Alta"
+        window.resultadoConsultaIA.prioridad === "MUY ALTA"
         ? "El área presenta condiciones muy favorables para el abastecimiento hídrico de acueductos rurales."
-        : window.resultadoConsultaIA.prioridad === "Alta"
+        : window.resultadoConsultaIA.prioridad === "ALTA"
         ? "El área presenta condiciones favorables para el de abastecimiento hídricode acueductos rurales."
         : window.resultadoConsultaIA.prioridad === "Moderada"
         ? "El área presenta condiciones aceptables para procesos de abastecimiento hídrico rural."
-        : window.resultadoConsultaIA.prioridad === "Baja"
+        : window.resultadoConsultaIA.prioridad === "BAJA"
         ? "El área presenta condiciones limitadas para el abastecimiento hídrico de acueductos rurales."
         : "El área no presenta condiciones adecuadas para el abastecimiento hídrico de acueductos rurales."
     }
@@ -783,13 +797,18 @@ botonIA.onclick = function () {
         
 
         <p>
-    📋 <b>Diagnóstico:</b><br>
+    <span style="display: block; text-align: center;">
+        📋 <b>DIAGNÓSTICO:</b>
+    </span>
     ${window.resultadoConsultaIA.diagnostico}
 </p>
- <p>
-            💡 <b>Recomendación:</b><br>
-            ${window.resultadoConsultaIA.recomendacion}
-        </p>
+
+<p>
+    <span style="display: block; text-align: center;">
+        💡 <b>RECOMENDACIÓN:</b>
+    </span>
+    ${window.resultadoConsultaIA.recomendacion}
+</p>
 
     `;
 };

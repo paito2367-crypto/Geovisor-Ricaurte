@@ -69,7 +69,7 @@ body{
         font-family: "Segoe UI", Arial, sans-serif;
         font-size: 16px;
         text-align: left;
-        font-weight: notmal;
+        font-weight: normal;
     }
 
     #panel-capas h3 {
@@ -316,13 +316,7 @@ body{
         text-align: center;
     }
 
-    #contenido-capas{
-        display: none;
-    }
-
-    #contenido-capas.mostrar{
-        display: block;
-    }
+   
 
     #Consulta-territorial {
         position: fixed;
@@ -445,6 +439,30 @@ body{
         max-width: 350px;
         z-index: 10000;
     }
+
+    @media (max-width: 992px) {
+
+     #panel-capas {
+        width: 180px;
+        max-width: calc(100% - 20px);
+        right: 10px;
+        top: 120px;
+        font-size: 13px;
+        padding: 8px;
+        max-height: 50vh;
+        overflow-y: auto;
+        box-sizing: border-box
+    }
+
+}
+@media (max-width: 768px) {
+
+    #panel-capas {
+        width: 160px;
+        right: 8px;
+        max-height: 50vh;
+    }
+}
 
 
 }
