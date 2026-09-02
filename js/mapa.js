@@ -770,14 +770,14 @@ botonIA.onclick = function () {
 <p style="text-align:center;">
     ${
         window.resultadoConsultaIA.prioridad === "Muy Alta"
-        ? "Es una condición muy favorable para considerar la zona en procesos de abastecimiento hídrico rural."
+        ? "El área presenta condiciones muy favorables para el abastecimiento hídrico de acueductos rurales."
         : window.resultadoConsultaIA.prioridad === "Alta"
-        ? "Es una condición favorable para considerar la zona en procesos de abastecimiento hídrico rural."
+        ? "El área presenta condiciones favorables para el de abastecimiento hídricode acueductos rurales."
         : window.resultadoConsultaIA.prioridad === "Moderada"
-        ? "Es una condición intermedia para considerar la zona en procesos de abastecimiento hídrico rural."
+        ? "El área presenta condiciones aceptables para procesos de abastecimiento hídrico rural."
         : window.resultadoConsultaIA.prioridad === "Baja"
-        ? "Es una condición poco favorable para considerar la zona en procesos de abastecimiento hídrico rural."
-        : "Es una condición muy poco favorable para considerar la zona en procesos de abastecimiento hídrico rural."
+        ? "El área presenta condiciones limitadas para el abastecimiento hídrico de acueductos rurales."
+        : "El área no presenta condiciones adecuadas para el abastecimiento hídrico de acueductos rurales."
     }
 </p>
         
@@ -911,7 +911,7 @@ function mostrarInfo(tipo, categoria) {
     }
 
     else if (categoria === 'Moderada') {
-        alert('Moderada: Áreas que con condiciones limitadas para el aprovechamiento del recurso hídrico');
+        alert('Moderada: Áreas que presentan condiciones limitadas para el aprovechamiento del recurso hídrico');
     }
 
     else if (categoria === 'Baja') {

@@ -405,6 +405,7 @@ body{
 }
 
 
+
 @media (max-width: 992px) {
     #Consulta-territorial {
         bottom: 70px;
@@ -433,6 +434,18 @@ body{
         touch-action: pan-y;
     }
 }
+
+ #consulta-ia {
+        top: 140px;
+        left: 55% ;
+        right: auto;
+        bottom: auto;
+        transform: translateX(-50%);
+        width: 85%;
+        max-width: 350px;
+        z-index: 10000;
+    }
+
 
 }
 }
