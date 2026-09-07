@@ -259,7 +259,7 @@ body{
 @media (max-width: 768px) {
 
     #encabezado{
-        height: 110x;
+        height: 110px;
         padding: 5px;
         position: relative;
     }
@@ -289,10 +289,10 @@ body{
     }
 
     #panel-capas {
-        top: 140px;
+        top: 130px;
         right: 10px;
         width: 150px;
-        font-size: 13px;
+        font-size: 10px;
         padding: 8px;
 
         max-height: 180px;
@@ -304,7 +304,7 @@ body{
     }
 
     #Convenciones{
-        top:340px;
+        top:420px;
         right: 10px;
         width:150px;
         max-height: 180px;
@@ -403,6 +403,8 @@ body{
     text-align: center;
 }
 
+}
+
 
 
 @media (max-width: 992px) {
@@ -415,72 +417,146 @@ body{
         font-size: 12px;
     }
 }
+
+}
+/* =========================
+   CELULAR
+========================= */
+
 @media (max-width: 768px) {
+
+    /* CONSULTA TERRITORIAL */
     #Consulta-territorial {
         position: fixed;
         top: auto;
-        bottom: 70px;
+        bottom: 120px;
         left: 8px;
-        width: 270px;
+        right: auto;
+
+        width: 260px;
         max-width: calc(100% - 16px);
-        max-height: 40vh;
+
+        max-height: 130px;
+
         padding: 8px;
+
         box-sizing: border-box;
+
         overflow-y: auto;
         overflow-x: hidden;
+
         font-size: 12px;
-        z-index: 999999;
+
+        z-index: 9999;
+
         touch-action: pan-y;
     }
-}
 
- #consulta-ia {
+
+    /* CAJA INTERPRETACIÓN */
+    #consulta-ia {
+   top: 140px;
+    left: 55%;
+    right: auto;
+    bottom: auto;
+
+    transform: translateX(-50%);
+
+    width: 85%;
+    max-width: 350px;
+
+    max-height: 45vh;
+
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    box-sizing: border-box;
+
+    z-index: 10000;
+
+    -webkit-overflow-scrolling: touch;
+    
+    }
+
+
+    /* PANEL DE CAPAS */
+    #panel-capas {
+        position: absolute;
+
         top: 140px;
-        left: 55% ;
-        right: auto;
-        bottom: auto;
-        transform: translateX(-50%);
-        width: 85%;
-        max-width: 350px;
+        right: 8px;
+
+        width: 155px;
+        max-width: calc(100% - 16px);
+
+        padding: 8px;
+        font-size: 11px;
+
+        box-sizing: border-box;
+
+        overflow: visible;
+
+        z-index: 1000;
+    }
+
+
+    /* CONTENIDO DESPLAZABLE DE LAS CAPAS */
+    #contenido-capas {
+        max-height: 250px;
+
+        overflow-y: auto;
+        overflow-x: hidden;
+
+        touch-action: pan-y;
+
+        -webkit-overflow-scrolling: touch;
+
+        padding-right: 3px;
+    }
+
+
+    /* BOTÓN INTERPRETACIÓN */
+    #boton-ia {
+        position: fixed;
+
+        bottom: 80px;
+        right: 8px;
+
+        font-size: 11px;
+
+        padding: 7px 10px;
+
         z-index: 10000;
     }
 
-    @media (max-width: 992px) {
-
-     #panel-capas {
-        width: 180px;
-        max-width: calc(100% - 20px);
-        right: 10px;
-        top: 120px;
-        font-size: 13px;
-        padding: 8px;
-        max-height: 50vh;
-        overflow-y: auto;
-        box-sizing: border-box
-    }
-
 }
-@media (max-width: 768px) {
+
+
+/* =========================
+   TABLET / PANTALLA PEQUEÑA
+========================= */
+
+@media (max-width: 992px) {
 
     #panel-capas {
-        width: 160px;
-        right: 8px;
-        max-height: 50vh;
-    }
-}
+        width: 180px;
+        max-width: calc(100% - 20px);
 
-@media (max-width: 768px) {
-
-    #boton-ia {
-        bottom: 60px;
         right: 10px;
-        font-size: 12px;
-        padding: 8px 10px;
+        top: 120px;
+
+        font-size: 13px;
+        padding: 8px;
+
+        max-height: 50vh;
+
+        overflow-y: auto;
+
+        box-sizing: border-box;
     }
 
-};
     
+}
 
 
-}
-}
+
