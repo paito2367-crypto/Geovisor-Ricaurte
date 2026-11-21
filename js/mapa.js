@@ -153,8 +153,8 @@ fetch('datos/OfertaH.geojson')
                 const lng = e.latlng.lng.toFixed(5);
                 layer.bindPopup(`
                     <div>
-                    <h3> &#128166; Consulta Potencial Hídrico</h3>
-                    <b> Variable: </b> Disponibilidad de agua<br>
+                    <h3> &#128166; Consulta Acumulación de flujo superficial</h3>
+                    <b> Variable: </b> Acumulación de flujo<br>
                     <b> Clasificación: </b> ${Categoria}
                     <button onclick="mostrarInfo('Categoria', decodeURIComponent('${categoriaInfo}'))"
 style="border:none;background:none;cursor:pointer;">ⓘ</button><br><br>
@@ -743,7 +743,7 @@ if (prioridad === "Muy Alta"){
     
     document.getElementById('consulta').innerHTML = `
         <p>&#127807; <b> Zonificación Ambiental: </b> ${resultadoZonificacion}</p>
-        <p>&#128166; <b> Oferta Hídrica: </b> ${resultadoOfertaH}</p>
+        <p>&#128166; <b> Acumulación de Flujo: </b> ${resultadoOfertaH}</p>
         <p>&#127758; <b> Aptitud Territorial: </b> ${resultadoAptitudH}</p>
         <p>&#128167; <b> Distancia a la Red de Drenaje: </b> ${resultadoDistancia}</p>
         <p>&#128101; <b> Distribución de la Población: </b> ${resultadoDemografia}</p>
@@ -892,23 +892,23 @@ function mostrarInfo(tipo, categoria) {
    if (tipo === 'Categoria') {
 
     if (categoria === 'Muy Alta') {
-        alert('Muy Alta: Áreas con muy alta acumulación de agua y condiciones favorables para el abastecimiento de acueductos rurales.');
+        alert('Muy Alta: Áreas con muy alta acumulación de flujo superficial y mayor concetración de aguas arriba.');
     }
 
     else if (categoria === 'Alta') {
-        alert('Alta: Áreas con disponibilidad hídrica alta para el abastecimiento de acueductos rurales.');
+        alert('Alta: Áreas con alta acumulación de flujo superficial y alta concetración de aguas arriba.');
     }
 
     else if (categoria === 'Moderada') {
-        alert('Moderada: Áreas con disponibilidad hídrica moderada para el abastecimiento de acueductos rurales.');
+        alert('Moderada: Áreas con acumulación intermedia de flujo superficial y concentración moderada aguas arriba.');
     }
 
     else if (categoria === 'Baja') {
-        alert('Baja: Áreas con disponibilidad hídrica baja para el abastecimiento de acueductos rurales');
+        alert('Baja: Áreas con baja acumulación de flujo superficial y concentración limitada aguas arriba.');
     }
 
     else if (categoria === 'Muy Baja') {
-        alert('Muy Baja: Áreas sin disponibilidad hídrica para el abastecimiento de acueductos rurales');
+        alert('Muy Baja: Áreas con muy baja acumulación de flujo superficial');
     }
 
     else {
